@@ -65,6 +65,20 @@ if (! empty($dsn) && ! in_array($dsn, ['no', 'NO', 'disabled'])):
 
     Sentry.onLoad(function () {
         Sentry.init({
+            integrations: [
+                Sentry.replayIntegration(),
+            ],
+
+            // -- Session Replay --
+            // This sets the sample rate at 10%. You may want to change it to 100% while in development and then sample at a lower rate in production.
+            replaysSessionSampleRate: 0.1,
+            // If you're not already sampling the entire session, change the sample rate to 100% when sampling sessions where errors occur.
+            replaysOnErrorSampleRate: 1.0,
+
+            // -- Performance --
+            // Specify a fixed sample rate:
+            // traces_sample_rate: 0.1,
+
             attachStacktrace: 'on',
         <?php if (empty($tunnel)): ?>
             dsn: "<?php echo $dsn; ?>",
